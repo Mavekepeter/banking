@@ -7,6 +7,7 @@ import { encryptId, parseStringify } from "../utils";
 import { User } from "lucide-react";
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid"
+import { revalidatePath } from "next/cache";
 
  
 export const signIn = async ({email,password}:signInProps) =>{
@@ -128,7 +129,12 @@ export const exchangePublicToken=async({
       sharableId:encryptId(accountData.account_id),
 
      });
-     //
+     //revalidate the path to reflect changes
+     revalidatePath('/');
+     //return a success message 
+     return parseStringify({
+      publicTokenExchange:'complete',
+     });
   } catch (error) {
     console.error('An error occurred while creating exchange token',error);
     
