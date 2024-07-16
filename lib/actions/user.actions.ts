@@ -3,7 +3,7 @@
 import { Client, ID } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
-import { parseStringify } from "../utils";
+import { encryptId, parseStringify } from "../utils";
 import { User } from "lucide-react";
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid"
@@ -101,11 +101,11 @@ export const exchangePublicToken=async({
     const accountsResponse= await plaidClient.accountsGet({
         access_token:accessToken
     });
-    const accountdata=accountsResponse.data.accounts[0];
+    const accountData=accountsResponse.data.accounts[0];
     //create account prrocessor for dwolla using the access token and acoint ID
     const request:ProcessorTokenCreateRequest={
       access_token:accessToken,
-      account_id:accountdata.account_id,
+      account_id:accountData.account_id,
       processor:'dwolla'as ProcessorTokenCreateRequestProcessorEnum,
 
     };
@@ -115,10 +115,20 @@ export const exchangePublicToken=async({
      const fundingSourceUrl=await addFundingSource({
       dwollaCustomerId:user.dwollaCustomerId,
       processorToken,
-      bankName:accountdata.name,
+      bankName:accountData.name,
      });
      if (!fundingSourceUrl) throw Error;
-     // create bank account using 
+     // create bank account using the user Id ,item Id accountId,accessToken,Fundind resource url,and sharebleID
+     await createBankaccont({
+      userId:user.$id,
+      bankId:itemId,
+      accountId:accountData.account_id,
+      accessToken,
+      fundingSourceUrl,
+      sharableId:encryptId(accountData.account_id),
+
+     });
+     //
   } catch (error) {
     console.error('An error occurred while creating exchange token',error);
     
