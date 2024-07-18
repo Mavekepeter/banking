@@ -21,13 +21,14 @@ import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { getLoggedInUser, signIn, signUp } from '@/lib/actions/user.actions'
+import { signIn, signUp } from '@/lib/actions/user.actions'
 import PlaidLink from './PlaidLink'
 
 const AuthForm = ({type}:{type:string}) => {
   const router =useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const formSchema=authFormSchema(type);
     // 1. Define your form.
@@ -44,11 +45,11 @@ const AuthForm = ({type}:{type:string}) => {
       setIsLoading(true)
       try {
         //sign up with Appwrite And create plain link token
+       
         if(type ==='sign-up'){
-          const newUser=await signUp(data);
-          setUser(newUser);
-            
-
+            const newUser=await signUp(data)
+            setUser(newUser);
+          
         }
         if(type==='sign-in'){
           const response = await signIn({
@@ -105,12 +106,12 @@ const AuthForm = ({type}:{type:string}) => {
            </div>
 
       </header>
-      {/* {user ? ( */}
-        <div className='flex flex-col gap-4'>
+     {user ? ( 
+         <div className='flex flex-col gap-4'>
           <PlaidLink user={user} variant='primary'/>
 
-        </div>
-      {/* ):(<> */}
+        </div> 
+       ):(<> 
          <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {type =='sign-up'&&(
@@ -157,7 +158,7 @@ const AuthForm = ({type}:{type:string}) => {
         
         <CustomInput
         control={form.control} name='email' label='Email'
-        placeholder='Enter your username'/>
+        placeholder='Enter your email'/>
         
         <CustomInput
         control={form.control} name='password' label='Password'
@@ -190,7 +191,7 @@ const AuthForm = ({type}:{type:string}) => {
         :'sign-in'}
       </Link>
     </footer>
-         {/* </>)} */}
+          </>)} 
     </section>
   )
 }

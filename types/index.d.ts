@@ -29,7 +29,7 @@ declare type User = {
   $id: string;
   email: string;
   userId: string;
-  dwollaCustomerUrl: string;
+  dwollaCustomerurl: string;
   dwollaCustomerId: string;
   firstName: string;
   lastName: string;
@@ -328,3 +328,4 @@ declare interface getBankProps {
 declare interface getBankByAccountIdProps {
   accountId: string;
 }
+

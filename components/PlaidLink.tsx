@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
-import { StyledString } from 'next/dist/build/swc';
+
 import { useRouter } from 'next/navigation';
-import { createLinkToken } from '@/lib/actions/user.actions';
+import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
 
 const PlaidLink = ({user,variant}:PlaidLinkProps) => {
     const router=useRouter();
@@ -11,18 +11,18 @@ const PlaidLink = ({user,variant}:PlaidLinkProps) => {
     useEffect(()=>{
         const getLinkToken=async()=>{
          const data=await createLinkToken(user);
-         settoken(data?.linkToken)
+         settoken(data?.linkToken);
         }
         getLinkToken();
     },[user]);
-    const onSuccess= useCallback<PlaidLinkOnSuccess>(async(public_token:String)=>{
-        // await exchangePublicToken({
-        //     publicToken:public_token,
-        //     user,
-        // })
+    const onSuccess = useCallback<PlaidLinkOnSuccess>(async (public_token: string) => {
+      await exchangePublicToken({
+        publicToken: public_token,
+        user,
+      })
         router.push('/');
 
-    },[user])
+    },[router, user])
     const config: PlaidLinkOptions={
         
         token,
@@ -49,11 +49,9 @@ const PlaidLink = ({user,variant}:PlaidLinkProps) => {
         </Button>
       )}
     </>
+    
   )
 }
 
 export default PlaidLink
 
-function async<T>(public_token: any, String: StringConstructor): any {
-    throw new Error('Function not implemented.');
-}

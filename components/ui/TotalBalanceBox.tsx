@@ -5,7 +5,7 @@ import DoughnutChart from '../DoughnutChart'
 
 
 const TotalBalanceBox = ({
-    accounts=[],totalBanks,totalcurrentBalance
+    accounts=[],totalBanks,totalCurrentBalance
 }:TotlaBalanceBoxProps) => {
   return (
     <section className='total-balance'>
@@ -22,7 +22,7 @@ const TotalBalanceBox = ({
             </p>
             <div className='total-balance-amount flex-center gap-2'>
                 
-                <AnimatedCounter amount={totalcurrentBalance}/>
+                <AnimatedCounter amount={totalCurrentBalance}/>
 
 
             </div>
