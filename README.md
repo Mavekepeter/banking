@@ -54,21 +54,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
    <div align="center">
      Build this project step by step with our detailed tutorial on <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube. Join the JSM family!
     </div>
-</div>
+</
 
- account has been created, if so, delete it
-    if (newUserAccount?.$id) {
-      const { user } = await createAdminClient();
-      await user.delete(newUserAccount?.$id);
-    }
-
-    return null;
-  }
-};
-
-export const signIn = async ({ email, password }: signInProps) => {
-  try {
-    const { account } = await createAdminClient();
-    const session = await account.createEmailPasswordSession(email, password);
-
-    cookie## 📋 
